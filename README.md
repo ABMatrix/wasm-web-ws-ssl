@@ -1,4 +1,8 @@
-# Run Server
+# wwws
+
+This example is designed to test whether the WS protocol running in a browser can bypass certificate detection.
+
+## Run Server
 * Install and run echo ws server.
 ```
 git clone https://github.com/vi/wsmirror.git
@@ -20,7 +24,7 @@ docker run --name nginx -d -p 80:80 -p 443:443 -v `pwd`/nginx.conf:/etc/nginx/ng
 sudo echo "<you ip> demo.safematrix.io" >> /etc/hosts
 ```
 
-# Run web
+## Run web
 
 * Install emcc
 ```
@@ -31,18 +35,26 @@ cd emsdk
 source ./emsdk_env.sh
 ```
 
-* Build wasm html.
+* Build and run wasm html.
 ```
 emcc main.cpp -lwebsocket.js -o main.html
 emrun --port 8080 ./main.html
 ```
 
-# Tools
+We're going to get a connection error.
+
+## Tools test
 
 * Netcat, curl and socat for WebSockets.
 ```
 wget https://github.com/vi/websocat/releases/download/v1.9.0/websocat_linux64
 
 sudo cp websocat_linux64 /usr/bin/websocat
+
+websocat -v -k wss://demo.safematrix.io
 ```
 
+Can communicate with the server.
+
+## conclusion
+Even if you put websocket links into WASM, you end up calling the browser's kernel, which validates the certificate. So you need another TLS+TCP connection that is independent of the browser kernel.
