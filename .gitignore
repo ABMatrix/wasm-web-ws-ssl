@@ -1,0 +1,6 @@
+emsdk/
+wsmirror/
+
+*.html
+*.js
+*.wasm
